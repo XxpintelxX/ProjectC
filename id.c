@@ -1,3 +1,5 @@
+// file that generates different identifiers for shapes
+
 #include "id.h"
 
 unsigned int global_id = 0;

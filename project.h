@@ -1,126 +1,90 @@
+// file that implements all structures, types and functions of project.c, manage_shape.c and shape.c
+
 #ifndef PROJECT_H
 # define PROJECT_H
+#define BOOL int
+typedef unsigned int ui;
 
 // INCLUDES
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-#include "area.h"
 #include "id.h"
 
-// STRUCTURES
-
-#define SHAPE_MAX 100 // Maximum number of shapes
-#define BOOL int
-typedef unsigned int ui;
-
+// TYPEDEF
 typedef enum {POINT, LINE, SQUARE, RECTANGLE, CIRCLE, POLYGON} SHAPE_TYPE;
+typedef struct area Area;
 
+// STRUCTURES
 struct point {
-    int x;
-    int y;
+    int x;          // coordinate of the point in the abciss
+    int y;          // coordinate of the ordinates
 };
 typedef struct point Point;
 
 struct line{
-    Point *p1;
-    Point *p2;
+    Point *p1;      // coordinates of the first point
+    Point *p2;      // coordinates of the second point
 };
 typedef struct line Line;
 
 struct circle{
-    Point* center;
-    int radius;
+    Point* center;  // coordinate of the center
+    int radius;     // value of the radius
 };
 typedef struct circle Circle;
 
 struct square{
-    Point *point;
-    int length;
+    Point *point;   // coordinate of the top left corner
+    int length;     // size of the side
 };
 typedef struct square Square;
 
 struct rectangle{
-    Point *point;
-    int width;
-    int length;
+    Point *point;   // coordinate of the top left corner
+    int width;      // value of the width
+    int length;     // value of the height
 };
 typedef struct rectangle Rectangle;
 
 struct polygon{
-    int nbSommets;
-    Point **sommets;
+    int nbSommets;      // number of the sommets
+    Point **sommets;    // list of all the corner point
 };
 typedef struct polygon Polygon;
 
-typedef struct node{
-    void *data;
-    struct node* next;
-}NODE;
-
 struct shape {
-    int id;
-    SHAPE_TYPE shape_type;
-    void *ptrShape;
+    int id;                 // id of the shape
+    SHAPE_TYPE shape_type;  // type of the shape (pont, circle, etc...)
+    void *ptrShape;         // pointer of the shape
 };
-
-//TYPEDEFS
-
-typedef struct area Area;
 typedef struct shape Shape;
-typedef NODE* LIST;
 
 // project.c
 
 int menu(Area *area);
 void print_grid(BOOL **grid);
-BOOL **createGrid(BOOL **grid, ui *rows, ui *columns);
-
-// addShape.c
-
-// void addShape(Area *area);
-// void drawShape();
-// void displayHelp(Area *area);
-// void deleteShape();
-// void displayListShapes(Area *area);
-// char upper(char c);
-
-// shapefcts.c
-
-// void addPoint(Area *area);
-// void addLine(Area *area);
-// void addSquare(Area *area);
-// void addCircle(Area *area);
-// void addPolygon(Area *area);
-// void addRectangle(Area *area);
 
 // manage_shapes
 
 Point* create_point(int px, int py);
 void print_point(Point *point);
-void delete_point(Point *point);
 
 Line* create_line(Point *p1, Point *p2);
 void print_line(Line *line);
-void delete_line(Line* line);
 
 Square* create_square(Point * point, int length);
 void print_square(Square * square);
-void delete_square(Square *square);
 
 Rectangle* create_rectangle(Point *point, int width, int length);
 void print_rectangle(Rectangle * rectangle);
-void delete_rectangle(Rectangle * rectangle);
 
 Circle* create_circle(Point* c, int r);
 void print_circle(Circle *circle);
-void delete_circle(Circle *circle);
 
 Polygon* create_polygon(int nbs);
 void print_polygon(Polygon* polygon);
-void delete_polygon(Polygon* polygon);
 
 //shape.c
 
@@ -131,7 +95,5 @@ Shape *create_square_shape(int px, int py, int length);
 Shape *create_rectangle_shape(int px, int py, int width, int height);
 Shape *create_circle_shape(int px, int py, int radus);
 Shape *create_polygon_shape(int n);
-void delete_shape(Shape * shape);
-void print_shape(Shape * shape);
 
 #endif

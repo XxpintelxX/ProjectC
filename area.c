@@ -1,11 +1,14 @@
+// file that deals with functions related to the area
+
 #include "area.h"
 
+// function that creates an area along a given height and width
 Area* create_area(unsigned int width, unsigned int height)
 {
-    Area* area = (Area*) malloc(sizeof(Area));
+    Area* area = (Area*) malloc(sizeof(Area));                      // Allocation of the memory needed to store an area
     area->width = width;
     area->height = height;
-    area->shapes = (Shape**) malloc(SHAPE_MAX * sizeof(Shape*));
+    area->shapes = (Shape**) malloc(SHAPE_MAX * sizeof(Shape*));    // Allocation of the memory needed to store all the shape in the area (max 100)
     area->nb_shape = 0;
     area->mat = (BOOL**) malloc(width * sizeof(BOOL*));
     for (ui i = 0; i < width; i++)
@@ -15,12 +18,14 @@ Area* create_area(unsigned int width, unsigned int height)
     return area;
 }
 
+// function that add a given shape in the list of shape of the area
 void add_shape_to_area(Area* area, Shape* shape)
 {
     area->shapes[area->nb_shape] = shape;
     area->nb_shape += 1;
 }
 
+// function that initialize all the pixel of the area at 0
 void clear_area(Area* area)
 {
     for (ui i =0; i<area->width; i++)
@@ -32,6 +37,7 @@ void clear_area(Area* area)
     }
 }
 
+// function that delete all the shape in the list of shape of the area
 void erase_area(Area* area)
 {
     clear_area(area);
@@ -39,16 +45,37 @@ void erase_area(Area* area)
     area->nb_shape = 0;
 }
 
-void delete_area(Area* area)
+// function that display numerical the shape in the array
+void draw_area(Area* area)
 {
-    clear_area(area);
+    for (int i = 0 ; i < area->nb_shape; i++)
+    {
+        switch (area->shapes[i]->shape_type) {
+            case 0:
+                write_point(area, area->shapes[i]->ptrShape);
+                break;
+            case 1:
+                write_line(area, area->shapes[i]->ptrShape);
+                break;
+            case 2:
+                write_square(area, area->shapes[i]->ptrShape);
+                break;
+            case 3:
+                write_rect(area, area->shapes[i]->ptrShape);
+                break;
+            case 4:
+                write_circle(area, area->shapes[i]->ptrShape);
+                break;
+            case 5:
+                write_poly(area, area->shapes[i]->ptrShape);
+                break;
+            default:
+                break;
+        }
+    }
 }
 
-// void draw_area(Area* area)
-// {
-//     return;
-// }
-
+// function that display the area with shapes in the screen
 void print_area(Area* area)
 {
     printf("   ");
@@ -87,13 +114,16 @@ void print_area(Area* area)
         }
         printf("\n");
     }
+    printf("\n");
 }
 
+// function that change in the matrix all the 0 concern to display a point
 void write_point(Area *area, Point *point)
 {
     area->mat[point->x][point->y] = 1;
 }
 
+// function that change in the matrix all the 0 concern to display a line
 void write_line(Area *area, Line *line)
 {
     int dx = line->p2->x - line->p1->x;
@@ -107,12 +137,13 @@ void write_line(Area *area, Line *line)
     float y = (float)line->p1->y;
 
     for (int i = 0; i <= steps; i++) {
-        area->mat[(int)x][(int)y] = 1; // Dessine le point dans la matrice
+        area->mat[(int)x][(int)y] = 1; // draw the point on the matrix
         x += xIncrement;
         y += yIncrement;
     }
 }
 
+// function that change in the matrix all the 0 concern to display a circle
 void write_circle(Area *area, Circle *circle)
 {
     int x = circle->radius;
@@ -140,6 +171,7 @@ void write_circle(Area *area, Circle *circle)
     }
 }
 
+// function that change in the matrix all the 0 concern to display a square
 void write_square(Area *area, Square *square)
 {
     int endX = square->point->x + square->length - 1;
@@ -158,6 +190,7 @@ void write_square(Area *area, Square *square)
     }
 }
 
+// function that change in the matrix all the 0 concern to display a rectangle
 void write_rect(Area *area, Rectangle *rect)
 {
     int endX = rect->point->x + rect->length - 1;
@@ -176,6 +209,7 @@ void write_rect(Area *area, Rectangle *rect)
     }
 }
 
+// function that change in the matrix all the 0 concern to display a polygone
 void write_poly(Area *area , Polygon *poly)
 {
     for (int i = 0; i < poly->nbSommets-1; i++)

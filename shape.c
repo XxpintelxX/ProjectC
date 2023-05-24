@@ -1,22 +1,27 @@
+// This file contains all the functions to create a figure.
+
 #include "project.h"
 
+// function that change any type of shape in a shape type
 Shape *create_empty_shape(SHAPE_TYPE shape_type)
 {
-    Shape *shp = (Shape *) malloc(sizeof(Shape));
-    shp->ptrShape = NULL;
-    shp->id = 1; // plus tard on appelera get_next_id();
-    shp->shape_type = shape_type;
+    Shape *shp = (Shape *) malloc(sizeof(Shape)); // allocates the necessary memory
+    shp->ptrShape = NULL; // pointer of the shape
+    shp->id = get_next_id(); // create the id of the shape
+    shp->shape_type = shape_type; // keeps the type of the shape (point, line, ...)
     return shp;
 }
 
+// function that change a point in a shape type
 Shape *create_point_shape(int px, int py)
 {
-    Shape *shp = create_empty_shape(POINT);
-    Point *p = create_point(px, py);
-    shp->ptrShape = p;
+    Shape *shp = create_empty_shape(POINT); // generate a shape
+    Point *p = create_point(px, py); // create a point
+    shp->ptrShape = p; //transform the point on a shape
     return shp;
 }
 
+// function that change a line in a shape type
 Shape *create_line_shape(int px1, int py1, int px2, int py2)
 {
     Shape *shp = create_empty_shape(LINE);
@@ -25,6 +30,7 @@ Shape *create_line_shape(int px1, int py1, int px2, int py2)
     return shp;
 }
 
+// function that change a square in a shape type
 Shape *create_square_shape(int px, int py, int length)
 {
     Shape *shp = create_empty_shape(SQUARE);
@@ -33,6 +39,7 @@ Shape *create_square_shape(int px, int py, int length)
     return shp;
 }
 
+// function that change a rectangle in a shape type
 Shape *create_rectangle_shape(int px, int py, int width, int height)
 {
     Shape *shp = create_empty_shape(RECTANGLE);
@@ -41,6 +48,7 @@ Shape *create_rectangle_shape(int px, int py, int width, int height)
     return shp;
 }
 
+// function that change a circle in a shape type
 Shape *create_circle_shape(int px, int py, int radius)
 {
     Shape *shp = create_empty_shape(CIRCLE);
@@ -49,46 +57,11 @@ Shape *create_circle_shape(int px, int py, int radius)
     return shp;
 }
 
-// Shape *create_polygon_shape(int n)
-// {
-//     Shape *shp = create_empty_shape(POLYGON);
-//     Polygon *p = create_polygon(n);
-//     shp->ptrShape = p;
-//     return shp;
-// }
-
-void print_shape(Shape *shape)
+// function that change a polygon in a shape type
+Shape *create_polygon_shape(int n)
 {
-    switch (shape->shape_type)
-    {
-        case 0:
-            printf("POINT ->\n");
-            print_point(shape->ptrShape);
-            break;
-        case 1:
-            printf("LINE ->\n");
-            print_line(shape->ptrShape);
-            break;
-        case 2:
-            printf("RECTANGLE ->\n");
-            break;
-        case 3:
-            printf("SQUARE ->\n");
-            break;
-        case 4:
-            printf("CIRCLE ->\n");
-            print_circle(shape->ptrShape);
-            break;
-        case 5:
-            printf("POLYGON ->\n");
-            print_polygon(shape->ptrShape);
-            break;
-        default:
-            break;
-    }
-}
-
-void delete_shape(Shape *shape)
-{
-    free(shape);
+     Shape *shp = create_empty_shape(POLYGON);
+     Polygon *p = create_polygon(n);
+     shp->ptrShape = p;
+     return shp;
 }
